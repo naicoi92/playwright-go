@@ -4323,6 +4323,7 @@ type Proxy struct {
 type Origin struct {
 	Origin       string      `json:"origin"`
 	LocalStorage []NameValue `json:"localStorage"`
+	IndexedDB	[]IndexedDB `json:"indexedDB"`
 }
 
 type RecordVideo struct {
@@ -4361,4 +4362,34 @@ type TracingGroupOptionsLocation struct {
 	File   string `json:"file"`
 	Line   *int   `json:"line"`
 	Column *int   `json:"column"`
+}
+
+// IndexedDB represents an IndexedDB database
+type IndexedDB struct {
+	Name         string        `json:"name"`
+	Version      int           `json:"version"`
+	ObjectStores []ObjectStore `json:"objectStores"`
+}
+
+// ObjectStore represents an IndexedDB object store
+type ObjectStore struct {
+	Name          string   `json:"name"`
+	KeyPath       *string  `json:"keyPath,omitempty"`       // Pointer for optional string
+	AutoIncrement bool     `json:"autoIncrement"`
+	Data          []Record `json:"data"`
+	Indexes       []Index  `json:"indexes,omitempty"` // Optional field
+}
+
+// Record represents a single record in an IndexedDB object store
+type Record struct {
+	Key   interface{} `json:"key"`   // Can be any type
+	Value interface{} `json:"value"` // Can be any type
+}
+
+// Index represents an IndexedDB index
+type Index struct {
+	Name       string      `json:"name"`
+	KeyPath    interface{}     `json:"keyPath"`    // Can be string or []string
+	Unique     bool        `json:"unique"`
+	MultiEntry bool        `json:"multiEntry"`
 }
