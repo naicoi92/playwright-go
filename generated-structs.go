@@ -4366,9 +4366,9 @@ type TracingGroupOptionsLocation struct {
 
 // IndexedDB represents an IndexedDB database
 type IndexedDB struct {
-	Name    string        `json:"name"`
-	Version int           `json:"version"`
-	Stores  []ObjectStore `json:"stores"`
+	Name    string `json:"name"`
+	Version int    `json:"version"`
+	Stores  any    `json:"stores"`
 }
 
 // ObjectStore represents an IndexedDB object store
