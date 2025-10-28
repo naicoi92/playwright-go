@@ -4321,9 +4321,9 @@ type Proxy struct {
 }
 
 type Origin struct {
-	Origin       string           `json:"origin"`
-	LocalStorage []NameValue      `json:"localStorage"`
-	IndexedDB    []map[string]any `json:"indexedDB"`
+	Origin       string      `json:"origin"`
+	LocalStorage []NameValue `json:"localStorage"`
+	IndexedDB    []IndexedDB `json:"indexedDB"`
 }
 
 type RecordVideo struct {
@@ -4373,11 +4373,11 @@ type IndexedDB struct {
 
 // ObjectStore represents an IndexedDB object store
 type ObjectStore struct {
-	Name          string   `json:"name"`
-	AutoIncrement bool     `json:"autoIncrement"`
-	Records       []Record `json:"records"`
-	Indexes       []Index  `json:"indexes"`           // Optional field
-	KeyPath       *string  `json:"keyPath,omitempty"` // Pointer for optional string
+	Name          string           `json:"name"`
+	AutoIncrement bool             `json:"autoIncrement"`
+	Records       []map[string]any `json:"records"`
+	Indexes       []Index          `json:"indexes"`           // Optional field
+	KeyPath       *string          `json:"keyPath,omitempty"` // Pointer for optional string
 }
 
 // Record represents a single record in an IndexedDB object store
