@@ -4374,22 +4374,22 @@ type IndexedDB struct {
 // ObjectStore represents an IndexedDB object store
 type ObjectStore struct {
 	Name          string   `json:"name"`
-	KeyPath       *string  `json:"keyPath,omitempty"` // Pointer for optional string
 	AutoIncrement bool     `json:"autoIncrement"`
 	Records       []Record `json:"records"`
-	Indexes       []Index  `json:"indexes,omitempty"` // Optional field
+	Indexes       []Index  `json:"indexes"`           // Optional field
+	KeyPath       *string  `json:"keyPath,omitempty"` // Pointer for optional string
 }
 
 // Record represents a single record in an IndexedDB object store
 type Record struct {
-	Key   interface{} `json:"key"`   // Can be any type
-	Value interface{} `json:"value"` // Can be any type
+	Key   any `json:"key,omitempty"`   // Can be any type
+	Value any `json:"value,omitempty"` // Can be any type
 }
 
 // Index represents an IndexedDB index
 type Index struct {
-	Name       string      `json:"name"`
-	KeyPath    interface{} `json:"keyPath"` // Can be string or []string
-	Unique     bool        `json:"unique"`
-	MultiEntry bool        `json:"multiEntry"`
+	Name       string `json:"name"`
+	KeyPath    any    `json:"keyPath,omitempty"` // Can be string or []string
+	Unique     bool   `json:"unique"`
+	MultiEntry bool   `json:"multiEntry"`
 }
