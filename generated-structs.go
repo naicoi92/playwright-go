@@ -4321,9 +4321,9 @@ type Proxy struct {
 }
 
 type Origin struct {
-	Origin       string      `json:"origin"`
-	LocalStorage []NameValue `json:"localStorage"`
-	IndexedDB    []IndexedDB `json:"indexedDB"`
+	Origin       string           `json:"origin"`
+	LocalStorage []NameValue      `json:"localStorage"`
+	IndexedDB    []map[string]any `json:"indexedDB"`
 }
 
 type RecordVideo struct {
