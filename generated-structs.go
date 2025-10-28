@@ -4366,9 +4366,9 @@ type TracingGroupOptionsLocation struct {
 
 // IndexedDB represents an IndexedDB database
 type IndexedDB struct {
-	Name    string `json:"name"`
-	Version int    `json:"version"`
-	Stores  any    `json:"stores"`
+	Name    string        `json:"name"`
+	Version int           `json:"version"`
+	Stores  []ObjectStore `json:"stores"`
 }
 
 // ObjectStore represents an IndexedDB object store
@@ -4382,14 +4382,14 @@ type ObjectStore struct {
 
 // Record represents a single record in an IndexedDB object store
 type Record struct {
-	Key   any `json:"key,omitempty"`   // Can be any type
-	Value any `json:"value,omitempty"` // Can be any type
+	Key   *string `json:"key,omitempty"`   // Can be any type
+	Value *string `json:"value,omitempty"` // Can be any type
 }
 
 // Index represents an IndexedDB index
 type Index struct {
-	Name       string `json:"name"`
-	KeyPath    any    `json:"keyPath,omitempty"` // Can be string or []string
-	Unique     bool   `json:"unique"`
-	MultiEntry bool   `json:"multiEntry"`
+	Name       string  `json:"name"`
+	KeyPath    *string `json:"keyPath,omitempty"` // Can be string or []string
+	Unique     bool    `json:"unique"`
+	MultiEntry bool    `json:"multiEntry"`
 }
