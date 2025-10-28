@@ -453,7 +453,7 @@ type BrowserContext interface {
 
 	// Returns storage state for this browser context, contains current cookies, local storage snapshot and IndexedDB
 	// snapshot.
-	StorageState(path ...string) (*StorageState, error)
+	StorageState(indexedDB bool, path ...string) (*StorageState, error)
 
 	Tracing() Tracing
 
@@ -471,13 +471,20 @@ type BrowserContext interface {
 	// provided, it passes [ConsoleMessage] value into the `predicate` function and waits for `predicate(message)` to
 	// return a truthy value. Will throw an error if the page is closed before the [BrowserContext.OnConsole] event is
 	// fired.
-	ExpectConsoleMessage(cb func() error, options ...BrowserContextExpectConsoleMessageOptions) (ConsoleMessage, error)
+	ExpectConsoleMessage(
+		cb func() error,
+		options ...BrowserContextExpectConsoleMessageOptions,
+	) (ConsoleMessage, error)
 
 	// Waits for event to fire and passes its value into the predicate function. Returns when the predicate returns truthy
 	// value. Will throw an error if the context closes before the event is fired. Returns the event data value.
 	//
 	//  event: Event name, same one would pass into `browserContext.on(event)`.
-	ExpectEvent(event string, cb func() error, options ...BrowserContextExpectEventOptions) (interface{}, error)
+	ExpectEvent(
+		event string,
+		cb func() error,
+		options ...BrowserContextExpectEventOptions,
+	) (interface{}, error)
 
 	// Performs action and waits for a new [Page] to be created in the context. If predicate is provided, it passes [Page]
 	// value into the `predicate` function and waits for `predicate(event)` to return a truthy value. Will throw an error
@@ -538,7 +545,10 @@ type BrowserType interface {
 	//    **parent** directory of the "Profile Path" seen at `chrome://version`.
 	//
 	//    Note that browsers do not allow launching multiple instances with the same User Data Directory.
-	LaunchPersistentContext(userDataDir string, options ...BrowserTypeLaunchPersistentContextOptions) (BrowserContext, error)
+	LaunchPersistentContext(
+		userDataDir string,
+		options ...BrowserTypeLaunchPersistentContextOptions,
+	) (BrowserContext, error)
 
 	// Returns browser name. For example: `chromium`, `webkit` or `firefox`.
 	Name() string
@@ -1066,7 +1076,10 @@ type ElementHandle interface {
 	// [actionability]: https://playwright.dev/docs/actionability
 	// [control]: https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement/control
 	// [locators]: https://playwright.dev/docs/locators
-	SelectOption(values SelectOptionValues, options ...ElementHandleSelectOptionOptions) ([]string, error)
+	SelectOption(
+		values SelectOptionValues,
+		options ...ElementHandleSelectOptionOptions,
+	) ([]string, error)
 
 	// This method waits for [actionability] checks, then focuses the element and selects all its
 	// text content.
@@ -1187,7 +1200,10 @@ type ElementHandle interface {
 	// [enabled]: https://playwright.dev/docs/actionability#enabled
 	// [not enabled]: https://playwright.dev/docs/actionability#enabled
 	// [editable]: https://playwright.dev/docs/actionability#editable
-	WaitForElementState(state ElementState, options ...ElementHandleWaitForElementStateOptions) error
+	WaitForElementState(
+		state ElementState,
+		options ...ElementHandleWaitForElementStateOptions,
+	) error
 
 	// Returns element specified by selector when it satisfies “[object Object]” option. Returns `null` if waiting for
 	// `hidden` or `detached`.
@@ -1199,7 +1215,10 @@ type ElementHandle interface {
 	// Deprecated: Use web assertions that assert visibility or a locator-based [Locator.WaitFor] instead.
 	//
 	//  selector: A selector to query for.
-	WaitForSelector(selector string, options ...ElementHandleWaitForSelectorOptions) (ElementHandle, error)
+	WaitForSelector(
+		selector string,
+		options ...ElementHandleWaitForSelectorOptions,
+	) (ElementHandle, error)
 }
 
 // [FileChooser] objects are dispatched by the page in the [Page.OnFileChooser] event.
@@ -1329,7 +1348,12 @@ type Frame interface {
 	// [TouchEvent]: https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent/TouchEvent
 	// [WheelEvent]: https://developer.mozilla.org/en-US/docs/Web/API/WheelEvent/WheelEvent
 	// [locators]: https://playwright.dev/docs/locators
-	DispatchEvent(selector string, typ string, eventInit interface{}, options ...FrameDispatchEventOptions) error
+	DispatchEvent(
+		selector string,
+		typ string,
+		eventInit interface{},
+		options ...FrameDispatchEventOptions,
+	) error
 
 	//
 	// 1. source: A selector to search for an element to drag. If there are multiple elements satisfying the selector, the first will
@@ -1350,7 +1374,12 @@ type Frame interface {
 	// 2. expression: JavaScript expression to be evaluated in the browser context. If the expression evaluates to a function, the
 	//    function is automatically invoked.
 	// 3. arg: Optional argument to pass to “[object Object]”.
-	EvalOnSelector(selector string, expression string, arg interface{}, options ...FrameEvalOnSelectorOptions) (interface{}, error)
+	EvalOnSelector(
+		selector string,
+		expression string,
+		arg interface{},
+		options ...FrameEvalOnSelectorOptions,
+	) (interface{}, error)
 
 	// Returns the return value of “[object Object]”.
 	// The method finds all elements matching the specified selector within the frame and passes an array of matched
@@ -1740,7 +1769,11 @@ type Frame interface {
 	// [actionability]: https://playwright.dev/docs/actionability
 	// [control]: https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement/control
 	// [locators]: https://playwright.dev/docs/locators
-	SelectOption(selector string, values SelectOptionValues, options ...FrameSelectOptionOptions) ([]string, error)
+	SelectOption(
+		selector string,
+		values SelectOptionValues,
+		options ...FrameSelectOptionOptions,
+	) ([]string, error)
 
 	// This method checks or unchecks an element matching “[object Object]” by performing the following steps:
 	//  1. Find an element matching “[object Object]”. If there is none, wait until a matching element is attached to
@@ -1864,7 +1897,11 @@ type Frame interface {
 	// 1. expression: JavaScript expression to be evaluated in the browser context. If the expression evaluates to a function, the
 	//    function is automatically invoked.
 	// 2. arg: Optional argument to pass to “[object Object]”.
-	WaitForFunction(expression string, arg interface{}, options ...FrameWaitForFunctionOptions) (JSHandle, error)
+	WaitForFunction(
+		expression string,
+		arg interface{},
+		options ...FrameWaitForFunctionOptions,
+	) (JSHandle, error)
 
 	// Waits for the required load state to be reached.
 	// This returns when the frame reaches a required load state, `load` by default. The navigation must have been
@@ -2402,7 +2439,11 @@ type Locator interface {
 	// 1. expression: JavaScript expression to be evaluated in the browser context. If the expression evaluates to a function, the
 	//    function is automatically invoked.
 	// 2. arg: Optional argument to pass to “[object Object]”.
-	Evaluate(expression string, arg interface{}, options ...LocatorEvaluateOptions) (interface{}, error)
+	Evaluate(
+		expression string,
+		arg interface{},
+		options ...LocatorEvaluateOptions,
+	) (interface{}, error)
 
 	// Execute JavaScript code in the page, taking all matching elements as an argument.
 	//
@@ -2434,7 +2475,11 @@ type Locator interface {
 	// 1. expression: JavaScript expression to be evaluated in the browser context. If the expression evaluates to a function, the
 	//    function is automatically invoked.
 	// 2. arg: Optional argument to pass to “[object Object]”.
-	EvaluateHandle(expression string, arg interface{}, options ...LocatorEvaluateHandleOptions) (JSHandle, error)
+	EvaluateHandle(
+		expression string,
+		arg interface{},
+		options ...LocatorEvaluateHandleOptions,
+	) (JSHandle, error)
 
 	// Set a value to the input field.
 	//
@@ -2937,7 +2982,10 @@ type LocatorAssertions interface {
 	//  description: Expected accessible description.
 	//
 	// [accessible description]: https://w3c.github.io/accname/#dfn-accessible-description
-	ToHaveAccessibleDescription(description interface{}, options ...LocatorAssertionsToHaveAccessibleDescriptionOptions) error
+	ToHaveAccessibleDescription(
+		description interface{},
+		options ...LocatorAssertionsToHaveAccessibleDescriptionOptions,
+	) error
 
 	// Ensures the [Locator] points to an element with a given
 	// [aria errormessage].
@@ -2945,7 +2993,10 @@ type LocatorAssertions interface {
 	//  errorMessage: Expected accessible error message.
 	//
 	// [aria errormessage]: https://w3c.github.io/aria/#aria-errormessage
-	ToHaveAccessibleErrorMessage(errorMessage interface{}, options ...LocatorAssertionsToHaveAccessibleErrorMessageOptions) error
+	ToHaveAccessibleErrorMessage(
+		errorMessage interface{},
+		options ...LocatorAssertionsToHaveAccessibleErrorMessageOptions,
+	) error
 
 	// Ensures the [Locator] points to an element with a given
 	// [accessible name].
@@ -2953,13 +3004,20 @@ type LocatorAssertions interface {
 	//  name: Expected accessible name.
 	//
 	// [accessible name]: https://w3c.github.io/accname/#dfn-accessible-name
-	ToHaveAccessibleName(name interface{}, options ...LocatorAssertionsToHaveAccessibleNameOptions) error
+	ToHaveAccessibleName(
+		name interface{},
+		options ...LocatorAssertionsToHaveAccessibleNameOptions,
+	) error
 
 	// Ensures the [Locator] points to an element with given attribute.
 	//
 	// 1. name: Attribute name.
 	// 2. value: Expected attribute value.
-	ToHaveAttribute(name string, value interface{}, options ...LocatorAssertionsToHaveAttributeOptions) error
+	ToHaveAttribute(
+		name string,
+		value interface{},
+		options ...LocatorAssertionsToHaveAttributeOptions,
+	) error
 
 	// Ensures the [Locator] points to an element with given CSS classes. When a string is provided, it must fully match
 	// the element's `class` attribute. To match individual classes use [LocatorAssertions.ToContainClass].
@@ -2988,7 +3046,11 @@ type LocatorAssertions interface {
 	//
 	// 1. name: Property name.
 	// 2. value: Property value.
-	ToHaveJSProperty(name string, value interface{}, options ...LocatorAssertionsToHaveJSPropertyOptions) error
+	ToHaveJSProperty(
+		name string,
+		value interface{},
+		options ...LocatorAssertionsToHaveJSPropertyOptions,
+	) error
 
 	// Ensures the [Locator] points to an element with a given [ARIA role].
 	// Note that role is matched as a string, disregarding the ARIA role hierarchy. For example, asserting  a superclass
@@ -3025,7 +3087,10 @@ type LocatorAssertions interface {
 	// Asserts that the target element matches the given [accessibility snapshot].
 	//
 	// [accessibility snapshot]: https://playwright.dev/docs/aria-snapshots
-	ToMatchAriaSnapshot(expected string, options ...LocatorAssertionsToMatchAriaSnapshotOptions) error
+	ToMatchAriaSnapshot(
+		expected string,
+		options ...LocatorAssertionsToMatchAriaSnapshotOptions,
+	) error
 }
 
 // The Mouse class operates in main-frame CSS pixels relative to the top-left corner of the viewport.
@@ -3293,7 +3358,12 @@ type Page interface {
 	// [TouchEvent]: https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent/TouchEvent
 	// [WheelEvent]: https://developer.mozilla.org/en-US/docs/Web/API/WheelEvent/WheelEvent
 	// [locators]: https://playwright.dev/docs/locators
-	DispatchEvent(selector string, typ string, eventInit interface{}, options ...PageDispatchEventOptions) error
+	DispatchEvent(
+		selector string,
+		typ string,
+		eventInit interface{},
+		options ...PageDispatchEventOptions,
+	) error
 
 	// This method drags the source element to the target element. It will first move to the source element, perform a
 	// `mousedown`, then move to the target element and perform a `mouseup`.
@@ -3320,7 +3390,12 @@ type Page interface {
 	// 2. expression: JavaScript expression to be evaluated in the browser context. If the expression evaluates to a function, the
 	//    function is automatically invoked.
 	// 3. arg: Optional argument to pass to “[object Object]”.
-	EvalOnSelector(selector string, expression string, arg interface{}, options ...PageEvalOnSelectorOptions) (interface{}, error)
+	EvalOnSelector(
+		selector string,
+		expression string,
+		arg interface{},
+		options ...PageEvalOnSelectorOptions,
+	) (interface{}, error)
 
 	// The method finds all elements matching the specified selector within the page and passes an array of matched
 	// elements as a first argument to “[object Object]”. Returns the result of “[object Object]” invocation.
@@ -3785,7 +3860,11 @@ type Page interface {
 	//    actions like click.
 	//
 	// [actionability check]: https://playwright.dev/docs/actionability
-	AddLocatorHandler(locator Locator, handler func(Locator), options ...PageAddLocatorHandlerOptions) error
+	AddLocatorHandler(
+		locator Locator,
+		handler func(Locator),
+		options ...PageAddLocatorHandlerOptions,
+	) error
 
 	// Removes all locator handlers added by [Page.AddLocatorHandler] for a specific locator.
 	//
@@ -3860,7 +3939,11 @@ type Page interface {
 	// [actionability]: https://playwright.dev/docs/actionability
 	// [control]: https://developer.mozilla.org/en-US/docs/Web/API/HTMLLabelElement/control
 	// [locators]: https://playwright.dev/docs/locators
-	SelectOption(selector string, values SelectOptionValues, options ...PageSelectOptionOptions) ([]string, error)
+	SelectOption(
+		selector string,
+		values SelectOptionValues,
+		options ...PageSelectOptionOptions,
+	) ([]string, error)
 
 	// This method checks or unchecks an element matching “[object Object]” by performing the following steps:
 	//  1. Find an element matching “[object Object]”. If there is none, wait until a matching element is attached to
@@ -4035,7 +4118,10 @@ type Page interface {
 	// Performs action and waits for a [ConsoleMessage] to be logged by in the page. If predicate is provided, it passes
 	// [ConsoleMessage] value into the `predicate` function and waits for `predicate(message)` to return a truthy value.
 	// Will throw an error if the page is closed before the [Page.OnConsole] event is fired.
-	ExpectConsoleMessage(cb func() error, options ...PageExpectConsoleMessageOptions) (ConsoleMessage, error)
+	ExpectConsoleMessage(
+		cb func() error,
+		options ...PageExpectConsoleMessageOptions,
+	) (ConsoleMessage, error)
 
 	// Performs action and waits for a new [Download]. If predicate is provided, it passes [Download] value into the
 	// `predicate` function and waits for `predicate(download)` to return a truthy value. Will throw an error if the page
@@ -4046,7 +4132,11 @@ type Page interface {
 	// value. Will throw an error if the page is closed before the event is fired. Returns the event data value.
 	//
 	//  event: Event name, same one typically passed into `*.on(event)`.
-	ExpectEvent(event string, cb func() error, options ...PageExpectEventOptions) (interface{}, error)
+	ExpectEvent(
+		event string,
+		cb func() error,
+		options ...PageExpectEventOptions,
+	) (interface{}, error)
 
 	// Performs action and waits for a new [FileChooser] to be created. If predicate is provided, it passes [FileChooser]
 	// value into the `predicate` function and waits for `predicate(fileChooser)` to return a truthy value. Will throw an
@@ -4058,7 +4148,11 @@ type Page interface {
 	// 1. expression: JavaScript expression to be evaluated in the browser context. If the expression evaluates to a function, the
 	//    function is automatically invoked.
 	// 2. arg: Optional argument to pass to “[object Object]”.
-	WaitForFunction(expression string, arg interface{}, options ...PageWaitForFunctionOptions) (JSHandle, error)
+	WaitForFunction(
+		expression string,
+		arg interface{},
+		options ...PageWaitForFunctionOptions,
+	) (JSHandle, error)
 
 	// Returns when the required load state has been reached.
 	// This resolves when the page reaches a required load state, `load` by default. The navigation must have been
@@ -4092,12 +4186,19 @@ type Page interface {
 	//    [`new URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor.
 	//
 	// [waiting for event]: https://playwright.dev/docs/events#waiting-for-event
-	ExpectRequest(urlOrPredicate interface{}, cb func() error, options ...PageExpectRequestOptions) (Request, error)
+	ExpectRequest(
+		urlOrPredicate interface{},
+		cb func() error,
+		options ...PageExpectRequestOptions,
+	) (Request, error)
 
 	// Performs action and waits for a [Request] to finish loading. If predicate is provided, it passes [Request] value
 	// into the `predicate` function and waits for `predicate(request)` to return a truthy value. Will throw an error if
 	// the page is closed before the [Page.OnRequestFinished] event is fired.
-	ExpectRequestFinished(cb func() error, options ...PageExpectRequestFinishedOptions) (Request, error)
+	ExpectRequestFinished(
+		cb func() error,
+		options ...PageExpectRequestFinishedOptions,
+	) (Request, error)
 
 	// Returns the matched response. See [waiting for event] for more details about
 	// events.
@@ -4107,7 +4208,11 @@ type Page interface {
 	//    [`new URL()`](https://developer.mozilla.org/en-US/docs/Web/API/URL/URL) constructor.
 	//
 	// [waiting for event]: https://playwright.dev/docs/events#waiting-for-event
-	ExpectResponse(urlOrPredicate interface{}, cb func() error, options ...PageExpectResponseOptions) (Response, error)
+	ExpectResponse(
+		urlOrPredicate interface{},
+		cb func() error,
+		options ...PageExpectResponseOptions,
+	) (Response, error)
 
 	// Returns when element specified by selector satisfies “[object Object]” option. Returns `null` if waiting for
 	// `hidden` or `detached`.
@@ -4532,7 +4637,11 @@ type WebSocket interface {
 	// value. Will throw an error if the webSocket is closed before the event is fired. Returns the event data value.
 	//
 	//  event: Event name, same one would pass into `webSocket.on(event)`.
-	ExpectEvent(event string, cb func() error, options ...WebSocketExpectEventOptions) (interface{}, error)
+	ExpectEvent(
+		event string,
+		cb func() error,
+		options ...WebSocketExpectEventOptions,
+	) (interface{}, error)
 
 	// **NOTE** In most cases, you should use [WebSocket.ExpectEvent].
 	// Waits for given `event` to fire. If predicate is provided, it passes event's value into the `predicate` function
