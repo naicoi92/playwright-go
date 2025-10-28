@@ -515,10 +515,10 @@ func (b *browserContextImpl) recordIntoHar(har string, options ...browserContext
 	return nil
 }
 
-func (b *browserContextImpl) StorageState(paths ...string) (*StorageState, error) {
+func (b *browserContextImpl) StorageState(indexedDB bool, paths ...string) (*StorageState, error) {
 	result, err := b.channel.SendReturnAsDict("storageState",
 		map[string]interface{}{
-			"indexedDB": true,
+			"indexedDB": indexedDB,
 		},
 	)
 	if err != nil {
