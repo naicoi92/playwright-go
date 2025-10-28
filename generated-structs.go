@@ -4366,9 +4366,9 @@ type TracingGroupOptionsLocation struct {
 
 // IndexedDB represents an IndexedDB database
 type IndexedDB struct {
-	Name         string        `json:"name"`
-	Version      int           `json:"version"`
-	ObjectStores []ObjectStore `json:"stores"`
+	Name    string        `json:"name"`
+	Version int           `json:"version"`
+	Stores  []ObjectStore `json:"stores"`
 }
 
 // ObjectStore represents an IndexedDB object store
@@ -4376,7 +4376,7 @@ type ObjectStore struct {
 	Name          string   `json:"name"`
 	KeyPath       *string  `json:"keyPath,omitempty"` // Pointer for optional string
 	AutoIncrement bool     `json:"autoIncrement"`
-	Data          []Record `json:"records"`
+	Records       []Record `json:"records"`
 	Indexes       []Index  `json:"indexes,omitempty"` // Optional field
 }
 
