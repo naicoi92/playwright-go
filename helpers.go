@@ -142,7 +142,9 @@ func remapValue(inMapValue reflect.Value, outStructValue reflect.Value) {
 	case reflect.Int:
 		outStructValue.SetInt(int64(inMapValue.Float()))
 	case reflect.Slice:
-		outStructValue.Set(reflect.MakeSlice(outStructValue.Type(), inMapValue.Len(), inMapValue.Cap()))
+		outStructValue.Set(
+			reflect.MakeSlice(outStructValue.Type(), inMapValue.Len(), inMapValue.Cap()),
+		)
 		for i := 0; i < inMapValue.Len(); i++ {
 			remapValue(inMapValue.Index(i).Elem(), outStructValue.Index(i))
 		}
@@ -165,7 +167,7 @@ func remapValue(inMapValue reflect.Value, outStructValue reflect.Value) {
 			}
 		}
 	default:
-		panic(inMapValue.Interface())
+		outStructValue.Set(inMapValue)
 	}
 }
 
@@ -305,7 +307,11 @@ func (r *routeHandlerEntry) WillExceed() bool {
 	return int(atomic.LoadInt32(&r.count)+1) >= r.times
 }
 
-func newRouteHandlerEntry(matcher *urlMatcher, handler routeHandler, times ...int) *routeHandlerEntry {
+func newRouteHandlerEntry(
+	matcher *urlMatcher,
+	handler routeHandler,
+	times ...int,
+) *routeHandlerEntry {
 	n := 0
 	if len(times) > 0 {
 		n = times[0]
@@ -474,7 +480,11 @@ func convertSelectOptionSet(values SelectOptionValues) map[string]interface{} {
 	return out
 }
 
-func unroute(inRoutes []*routeHandlerEntry, url interface{}, handlers ...routeHandler) ([]*routeHandlerEntry, []*routeHandlerEntry, error) {
+func unroute(
+	inRoutes []*routeHandlerEntry,
+	url interface{},
+	handlers ...routeHandler,
+) ([]*routeHandlerEntry, []*routeHandlerEntry, error) {
 	var handler routeHandler
 	if len(handlers) == 1 {
 		handler = handlers[0]
@@ -535,7 +545,8 @@ func assignStructFields(dest, src interface{}, omitExtra bool) error {
 		destFieldType := destField.Type()
 		destFieldName := destValue.Type().Field(i).Name
 
-		if srcField := srcValue.FieldByName(destFieldName); srcField.IsValid() && srcField.Type() != destFieldType {
+		if srcField := srcValue.FieldByName(destFieldName); srcField.IsValid() &&
+			srcField.Type() != destFieldType {
 			return fmt.Errorf("mismatched field type for field %s", destFieldName)
 		} else if srcField.IsValid() {
 			destField.Set(srcField)

@@ -4383,10 +4383,10 @@ type ObjectStore struct {
 
 // Record represents a single record in an IndexedDB object store
 type Record struct {
-	Key          *string          `json:"key,omitempty"` // Can be any type
-	KeyEncoded   *string          `json:"keyEncoded,omitempty"`
-	Value        *map[string]*any `json:"value,omitempty"` // Can be any type
-	ValueEncoded *map[string]*any `json:"valueEncoded,omitempty"`
+	Key          *string         `json:"key,omitempty"` // Can be any type
+	KeyEncoded   *string         `json:"keyEncoded,omitempty"`
+	Value        *map[string]any `json:"value,omitempty"` // Can be any type
+	ValueEncoded *map[string]any `json:"valueEncoded,omitempty"`
 }
 
 // Index represents an IndexedDB index
